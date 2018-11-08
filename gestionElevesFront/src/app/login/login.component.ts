@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { LoginService } from './login.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from './service/login.service';
+import { LoginError } from './error/login-error';
 
 @Component({
   selector: 'app-login',
@@ -10,20 +11,49 @@ import { LoginService } from './login.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private loginservice: LoginService) { }
+  error = '';
+  public showAuthenticationError = false;
+  public errorMessage;
+  constructor(private formBuilder: FormBuilder, private router: Router,
+     private loginservice: LoginService) { }
 
   ngOnInit() {
-    this.loginForm =this.formBuilder.group({
+    this.loginForm =  this.formBuilder.group({
       login: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
-  
   }
 
   get f() { return this.loginForm.controls; }
 
-  onSubmit(){
+  onSubmit()  {
+    if  (this.loginForm.invalid) {
+      return;
+    }
+
+    this.loginservice.login(this.f.login.value, this.f.password.value).subscribe(
+      data => {
+        console.log(data);
+        this.router.navigate(['']);
+      },
+      error => {
+         this.loginError(error);
+      });
+  }
+
+  private loginError(error: LoginError): void {
+    this.showAuthenticationError = true;
+    switch (error) {
+      case LoginError.AuthenticationError:
+        this.errorMessage =   'mot de passe incorrect';
+        break;
+      case LoginError.ProxyError:
+        this.errorMessage = 'Erreur proxy, veuillez repassez l\'authentification internet';
+        break;
+      case LoginError.Unknow:
+      default:
+        this.errorMessage = 'Une erreur inconnue est survenue';
+    }
   }
 
 }
