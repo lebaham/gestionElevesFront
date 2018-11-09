@@ -4,27 +4,24 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './guards/auth.guard';
-import { ErrorInterceptor } from './guards/intercepteur/ErrorInterceptor';
-import { JwtInterceptor } from './guards/intercepteurJwt/jwtInterceptor';
+import { LoginModule } from './login/login.module';
+import { LoginService } from './login/service/login.service';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent
+    AppComponent
   ],
   imports: [
+    LoginModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [AuthGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
-  ],
+    LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

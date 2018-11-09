@@ -11,7 +11,6 @@ import { LoginError } from './error/login-error';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  error = '';
   public showAuthenticationError = false;
   public errorMessage;
   constructor(private formBuilder: FormBuilder, private router: Router,
@@ -30,11 +29,9 @@ export class LoginComponent implements OnInit {
     if  (this.loginForm.invalid) {
       return;
     }
-
     this.loginservice.login(this.f.login.value, this.f.password.value).subscribe(
-      data => {
-        console.log(data);
-        this.router.navigate(['']);
+      () => {
+      //  this.router.navigate(['']);
       },
       error => {
          this.loginError(error);

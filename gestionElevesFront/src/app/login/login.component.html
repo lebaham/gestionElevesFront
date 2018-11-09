@@ -29,6 +29,7 @@
                 <button class="btn btn-success">creer un nouvel utilisateur</button>
               </div>
             </div>
+            <div *ngIf="error" class="alert alert-danger">{{errorMessage}}</div>
           </form>
         </div>
       </div>

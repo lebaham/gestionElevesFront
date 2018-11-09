@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from '../guards/intercepteurJwt/jwtInterceptor';
 import { ErrorInterceptor } from '../guards/intercepteur/ErrorInterceptor';
@@ -8,9 +8,9 @@ import { LoginComponent } from './login.component';
 
 @NgModule({
   imports: [
-    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   declarations: [LoginComponent],
   providers: [
